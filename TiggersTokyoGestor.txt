@@ -1,0 +1,137 @@
+CREATE trigger DecrementaEstoqueItensCompra on itenscompra
+for delete 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	declare CURSOR_PROD cursor for 
+
+	select pro_cod, itc_qtde from deleted 
+
+	open CURSOR_PROD 
+
+	fetch next from CURSOR_PROD into @codigo, @qtde
+
+	while @@FETCH_STATUS = 0
+	begin
+
+	update produto set pro_qtde = pro_qtde - @qtde where produto.pro_cod = @codigo
+
+	fetch next from CURSOR_PROD into @codigo, @qtde
+end 
+
+close CURSOR_PROD 
+deallocate CURSOR_PROD
+
+end
+
+
+CREATE trigger IncrementaEstoqueItensCompra on itenscompra
+for insert 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	SELECT @codigo = pro_cod, @qtde = itc_qtde FROM INSERTED
+
+	update produto set pro_qtde = pro_qtde + @qtde where produto.pro_cod = @codigo
+end 
+
+CREATE trigger tgiDecrementaEstoqueVenda on itensvenda
+for insert 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	SELECT @codigo = pro_cod, @qtde = itv_qtde FROM INSERTED
+
+	update produto set pro_qtde = pro_qtde - @qtde where produto.pro_cod = @codigo
+end 
+
+CREATE trigger IncrementaEstoqueItensMontagem on itensmontagem
+for delete 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	declare CURSOR_PROD cursor for 
+
+	select pro_cod, itm_qtde from deleted 
+
+	open CURSOR_PROD 
+
+	fetch next from CURSOR_PROD into @codigo, @qtde
+
+	while @@FETCH_STATUS = 0
+	begin
+
+	update produto set pro_qtde = pro_qtde + @qtde where produto.pro_cod = @codigo
+
+	fetch next from CURSOR_PROD into @codigo, @qtde
+end 
+
+close CURSOR_PROD 
+deallocate CURSOR_PROD
+
+end
+
+
+CREATE trigger tgiDecrementaEstoqueItensMontagem on itensmontagem
+for insert 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	SELECT @codigo = pro_cod, @qtde = itm_qtde FROM INSERTED
+
+	update produto set pro_qtde = pro_qtde - @qtde where produto.pro_cod = @codigo
+end 
+
+
+
+CREATE trigger DecrementaEstoqueProdutoMontagem on montagem
+for delete 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	declare CURSOR_PROD cursor for 
+
+	select pro_cod, pro_qtde from deleted 
+
+	open CURSOR_PROD 
+
+	fetch next from CURSOR_PROD into @codigo, @qtde
+
+	while @@FETCH_STATUS = 0
+	begin
+
+	update produto set pro_qtde = pro_qtde - @qtde where produto.pro_cod = @codigo
+
+	fetch next from CURSOR_PROD into @codigo, @qtde
+end 
+
+close CURSOR_PROD 
+deallocate CURSOR_PROD
+
+end
+
+
+
+CREATE trigger IncrementaEstoqueProdutoMontagem on montagem
+for insert 
+as
+BEGIN
+    DECLARE @qtde float,
+	@codigo       integer
+
+	SELECT @codigo = pro_cod, @qtde = pro_qtde FROM INSERTED
+
+	update produto set pro_qtde = pro_qtde + @qtde where produto.pro_cod = @codigo
+end 

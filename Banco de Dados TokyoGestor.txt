@@ -1,0 +1,839 @@
+USE [master]
+GO
+/****** Object:  Database [ControleDeEstoque]    Script Date: 19/03/2019 15:00:58 ******/
+CREATE DATABASE [TokyoGestor]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'TokyoGestor', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\TokyoGestor.mdf' , SIZE = 7168KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'TokyoGestor_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\TokyoGestor_log.ldf' , SIZE = 4672KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [TokyoGestor] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [TokyoGestor].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [TokyoGestor] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [TokyoGestor] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [TokyoGestor] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [TokyoGestor] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [TokyoGestor] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [TokyoGestor] SET  MULTI_USER 
+GO
+ALTER DATABASE [TokyoGestor] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [TokyoGestor] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [TokyoGestor] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [TokyoGestor] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [TokyoGestor] SET DELAYED_DURABILITY = DISABLED 
+GO
+USE [TokyoGestor]
+GO
+/****** Object:  Table [dbo].[categoria]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[categoria](
+	[cat_cod] [int] IDENTITY(1,1) NOT NULL,
+	[cat_nome] [varchar](95) NULL,
+ CONSTRAINT [XPKcategoria] PRIMARY KEY NONCLUSTERED 
+(
+	[cat_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[cliente]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[cliente](
+	[cli_cod] [int] IDENTITY(1,1) NOT NULL,
+	[cli_nome] [varchar](95) NULL,
+	[cli_cpfcnpj] [varchar](95) NULL,
+	[cli_rgie] [varchar](95) NULL,
+	[cli_rsocial] [varchar](95) NULL,
+	[cli_tipo] [varchar](20) NULL,
+	[cli_cep] [varchar](20) NULL,
+	[cli_endereco] [varchar](95) NULL,
+	[cli_bairro] [varchar](95) NULL,
+	[cli_fone] [varchar](95) NULL,
+	[cli_cel] [varchar](95) NULL,
+	[cli_email] [varchar](95) NULL,
+	[cli_endnumero] [varchar](10) NULL,
+	[cli_cidade] [varchar](95) NULL,
+	[cli_estado] [varchar](95) NULL,
+	[cli_ibge] [int] NULL,
+	[cli_identificacao] [varchar](95) NULL,
+ CONSTRAINT [XPKcliente] PRIMARY KEY NONCLUSTERED 
+(
+	[cli_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[compra]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[compra](
+	[com_cod] [int] IDENTITY(1,1) NOT NULL,
+	[com_data] [datetime] NULL,
+	[com_nfiscal] [int] NULL,
+	[com_total] [money] NULL,
+	[com_nparcelas] [int] NULL,
+	[com_status] [varchar](90) NULL,
+	[for_cod] [int] NULL,
+	[tpa_cod] [int] NULL,
+	[ope_cod] [int] NULL,
+	[des_cod] [int] NULL,
+ CONSTRAINT [XPKcompra] PRIMARY KEY NONCLUSTERED 
+(
+	[com_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[configuracoes]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[configuracoes](
+	[ultima_nf] [int] NULL,
+	[venda_estoque_positivo] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[despesa]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[despesa](
+	[des_cod] [int] IDENTITY(1,1) NOT NULL,
+	[des_descricao] [varchar](90) NULL,
+ CONSTRAINT [PK_despesa] PRIMARY KEY CLUSTERED 
+(
+	[des_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[fichatecnica]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[fichatecnica](
+	[pro_cod] [int] NOT NULL,
+	[itm_qtde] [float] NULL,
+	[itm_valor] [money] NULL,
+	[pro_codprincipal] [int] NOT NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[filial]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[filial](
+	[fil_cod] [int] IDENTITY(1,1) NOT NULL,
+	[fil_rsocial] [varchar](90) NULL,
+	[fil_fantasia] [varchar](90) NULL,
+	[fil_cnpj] [varchar](90) NULL,
+	[fil_endereco] [varchar](90) NULL,
+	[fil_endnumero] [varchar](90) NULL,
+	[fil_cep] [varchar](20) NULL,
+	[fil_bairro] [varchar](90) NULL,
+	[fil_fone] [varchar](90) NULL,
+	[fil_cel] [varchar](90) NULL,
+	[fil_email] [varchar](90) NULL,
+	[fil_cidade] [varchar](90) NULL,
+	[fil_estado] [varchar](90) NULL,
+	[fil_regime] [varchar](90) NULL,
+	[fil_ie] [varchar](90) NULL,
+ CONSTRAINT [PK_filial] PRIMARY KEY CLUSTERED 
+(
+	[fil_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[fornecedor]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[fornecedor](
+	[for_cod] [int] IDENTITY(1,1) NOT NULL,
+	[for_nome] [varchar](95) NULL,
+	[for_rsocial] [varchar](95) NULL,
+	[for_ie] [varchar](95) NULL,
+	[for_cnpj] [varchar](95) NULL,
+	[for_cep] [varchar](95) NULL,
+	[for_endereco] [varchar](95) NULL,
+	[for_bairro] [varchar](95) NULL,
+	[for_fone] [varchar](95) NULL,
+	[for_cel] [varchar](95) NULL,
+	[for_email] [varchar](95) NULL,
+	[for_endnumero] [varchar](95) NULL,
+	[for_cidade] [varchar](95) NULL,
+	[for_estado] [varchar](95) NULL,
+	[for_ibge] [int] NULL,
+ CONSTRAINT [XPKfornecedor] PRIMARY KEY NONCLUSTERED 
+(
+	[for_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[itenscompra]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[itenscompra](
+	[itc_cod] [int] NOT NULL,
+	[itc_qtde] [float] NULL,
+	[itc_valor] [money] NULL,
+	[com_cod] [int] NOT NULL,
+	[pro_cod] [int] NOT NULL,
+	[itc_desconto] [money] NULL,
+ CONSTRAINT [XPKitenscompra] PRIMARY KEY NONCLUSTERED 
+(
+	[itc_cod] ASC,
+	[com_cod] ASC,
+	[pro_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[itensmontagem]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[itensmontagem](
+	[itm_cod] [int] NOT NULL,
+	[itm_qtde] [float] NULL,
+	[itm_valor] [money] NULL,
+	[mtg_cod] [int] NOT NULL,
+	[pro_cod] [int] NOT NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[itensvenda]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[itensvenda](
+	[itv_cod] [int] NOT NULL,
+	[itv_qtde] [float] NULL,
+	[itv_valor] [money] NULL,
+	[ven_cod] [int] NOT NULL,
+	[pro_cod] [int] NOT NULL,
+	[itv_desconto] [money] NULL,
+ CONSTRAINT [XPKitensVenda] PRIMARY KEY NONCLUSTERED 
+(
+	[itv_cod] ASC,
+	[ven_cod] ASC,
+	[pro_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[montagem]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[montagem](
+	[mtg_cod] [int] IDENTITY(1,1) NOT NULL,
+	[mtg_data] [date] NULL,
+	[mtg_total] [money] NULL,
+	[pro_cod] [int] NULL,
+	[pro_qtde] [float] NULL,
+ CONSTRAINT [PK_montagem] PRIMARY KEY CLUSTERED 
+(
+	[mtg_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ncm]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[ncm](
+	[ncm] [varchar](8) NOT NULL,
+	[csosn] [varchar](3) NULL,
+	[origen_merc] [varchar](1) NULL,
+	[cst_icms] [varchar](2) NULL,
+	[base_icms] [varchar](5) NULL,
+	[perc_icms] [varchar](2) NULL,
+	[cst_pis] [varchar](2) NULL,
+	[base_pis] [varchar](5) NULL,
+	[perc_pis] [varchar](2) NULL,
+	[cst_cofins] [varchar](2) NULL,
+	[base_cofins] [varchar](5) NULL,
+	[perc_cofins] [varchar](2) NULL,
+	[cst_ipi] [varchar](2) NULL,
+	[base_ipi] [varchar](5) NULL,
+	[perc_ipi] [varchar](2) NULL,
+ CONSTRAINT [PK_ncm] PRIMARY KEY CLUSTERED 
+(
+	[ncm] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[operacao]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[operacao](
+	[ope_cod] [int] IDENTITY(1,1) NOT NULL,
+	[ope_cfop] [varchar](5) NOT NULL,
+	[ope_descricao] [varchar](90) NOT NULL,
+ CONSTRAINT [PK_operacao] PRIMARY KEY CLUSTERED 
+(
+	[ope_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[pagamento]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[pagamento](
+	[pag_cod] [int] IDENTITY(1,1) NOT NULL,
+	[com_cod] [int] NULL,
+	[pco_cod] [int] NOT NULL,
+	[pag_valor] [money] NOT NULL,
+	[pag_data] [date] NOT NULL,
+	[tpa_cod] [int] NOT NULL,
+	[des_cod] [int] NULL,
+	[pag_obs] [varchar](90) NULL,
+	[pag_desconto] [money] NULL,
+ CONSTRAINT [PK_pagamento] PRIMARY KEY CLUSTERED 
+(
+	[pag_cod] ASC,
+	[tpa_cod] ASC,
+	[pco_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[parcelascompra]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[parcelascompra](
+	[pco_cod] [int] NOT NULL,
+	[pco_valor] [money] NULL,
+	[pco_datapagto] [date] NULL,
+	[pco_datavecto] [date] NULL,
+	[com_cod] [int] NOT NULL,
+	[pco_valorpago] [money] NULL,
+	[des_cod] [int] NULL,
+ CONSTRAINT [XPKparcelascompra] PRIMARY KEY CLUSTERED 
+(
+	[pco_cod] ASC,
+	[com_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[parcelasvenda]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[parcelasvenda](
+	[ven_cod] [int] NOT NULL,
+	[pve_cod] [int] NOT NULL,
+	[pve_valor] [money] NULL,
+	[pve_datapagto] [date] NULL,
+	[pve_datavecto] [date] NULL,
+	[pve_valorrecebido] [money] NULL,
+	[ven_rec] [int] NULL,
+ CONSTRAINT [PK_parcelasvenda] PRIMARY KEY CLUSTERED 
+(
+	[pve_cod] ASC,
+	[ven_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[produto]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[produto](
+	[pro_cod] [int] IDENTITY(1,1) NOT NULL,
+	[pro_nome] [varchar](200) NULL,
+	[pro_descricao] [text] NULL,
+	[pro_foto] [image] NULL,
+	[pro_valorpago] [money] NULL,
+	[pro_valorvenda] [money] NULL,
+	[pro_qtde] [float] NULL,
+	[umed_cod] [int] NULL,
+	[cat_cod] [int] NULL,
+	[scat_cod] [int] NULL,
+	[pro_ref] [varchar](20) NULL,
+	[pro_codbarra] [varchar](30) NULL,
+	[pro_ncm] [varchar](8) NULL,
+ CONSTRAINT [XPKproduto] PRIMARY KEY NONCLUSTERED 
+(
+	[pro_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[recebimento]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[recebimento](
+	[rec_cod] [int] IDENTITY(1,1) NOT NULL,
+	[ven_cod] [int] NULL,
+	[pve_cod] [int] NOT NULL,
+	[rec_valor] [money] NOT NULL,
+	[rec_data] [date] NOT NULL,
+	[tpa_cod] [int] NOT NULL,
+	[ven_rec] [int] NULL,
+	[rec_obs] [varchar](90) NULL,
+	[rec_desconto] [money] NULL,
+ CONSTRAINT [PK_recebimentovenda] PRIMARY KEY CLUSTERED 
+(
+	[rec_cod] ASC,
+	[pve_cod] ASC,
+	[tpa_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[receita]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[receita](
+	[rec_cod] [int] IDENTITY(1,1) NOT NULL,
+	[rec_descricao] [varchar](90) NULL,
+ CONSTRAINT [PK_receita] PRIMARY KEY CLUSTERED 
+(
+	[rec_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[subcategoria]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[subcategoria](
+	[scat_cod] [int] IDENTITY(1,1) NOT NULL,
+	[scat_nome] [varchar](95) NULL,
+	[cat_cod] [int] NULL,
+ CONSTRAINT [XPKsubcategoria] PRIMARY KEY NONCLUSTERED 
+(
+	[scat_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[tipopagamento]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tipopagamento](
+	[tpa_cod] [int] IDENTITY(1,1) NOT NULL,
+	[tpa_nome] [varchar](90) NULL,
+ CONSTRAINT [XPKtipopagamento] PRIMARY KEY CLUSTERED 
+(
+	[tpa_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[undmedida]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[undmedida](
+	[umed_cod] [int] IDENTITY(1,1) NOT NULL,
+	[umed_nome] [varchar](95) NULL,
+ CONSTRAINT [XPKmedida] PRIMARY KEY NONCLUSTERED 
+(
+	[umed_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[usuario]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[usuario](
+	[id_usuario] [int] IDENTITY(1,1) NOT NULL,
+	[nome] [varchar](50) NULL,
+	[senha] [varchar](50) NULL,
+ CONSTRAINT [PK_usuario] PRIMARY KEY CLUSTERED 
+(
+	[id_usuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[venda]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[venda](
+	[ven_cod] [int] IDENTITY(1,1) NOT NULL,
+	[ven_data] [datetime] NULL,
+	[ven_nfiscal] [int] NULL,
+	[ven_total] [money] NULL,
+	[ven_nparcelas] [int] NULL,
+	[ven_status] [varchar](95) NULL,
+	[cli_cod] [int] NULL,
+	[tpa_cod] [int] NULL,
+	[ven_avista] [int] NULL,
+	[ope_cod] [int] NULL,
+	[ven_rec] [int] NULL,
+	[ven_vlrfrete] [money] NULL,
+	[ven_tfrete] [int] NULL,
+	[ven_veicplaca] [varchar](7) NULL,
+	[ven_ufplaca] [varchar](2) NULL,
+	[ven_volumes] [int] NULL,
+	[ven_especie] [varchar](50) NULL,
+	[ven_marca] [varchar](50) NULL,
+	[ven_numeracao] [varchar](50) NULL,
+	[ven_pbruto] [varchar](50) NULL,
+	[ven_pliquido] [varchar](50) NULL,
+	[ven_transportador] [int] NULL,
+	[ven_obs] [varchar](999) NULL,
+	[ven_nf] [int] NULL,
+	[ven_chavenf] [varchar](99) NULL,
+	[ven_caminhoxml] [varchar](999) NULL,
+ CONSTRAINT [XPKvenda] PRIMARY KEY NONCLUSTERED 
+(
+	[ven_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Index [IX_Table_1]    Script Date: 19/03/2019 15:00:58 ******/
+CREATE NONCLUSTERED INDEX [IX_Table_1] ON [dbo].[itensmontagem]
+(
+	[itm_cod] ASC,
+	[mtg_cod] ASC,
+	[pro_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[compra]  WITH CHECK ADD  CONSTRAINT [R_24] FOREIGN KEY([tpa_cod])
+REFERENCES [dbo].[tipopagamento] ([tpa_cod])
+GO
+ALTER TABLE [dbo].[compra] CHECK CONSTRAINT [R_24]
+GO
+ALTER TABLE [dbo].[itenscompra]  WITH CHECK ADD  CONSTRAINT [R_15] FOREIGN KEY([com_cod])
+REFERENCES [dbo].[compra] ([com_cod])
+GO
+ALTER TABLE [dbo].[itenscompra] CHECK CONSTRAINT [R_15]
+GO
+ALTER TABLE [dbo].[itenscompra]  WITH CHECK ADD  CONSTRAINT [R_17] FOREIGN KEY([pro_cod])
+REFERENCES [dbo].[produto] ([pro_cod])
+GO
+ALTER TABLE [dbo].[itenscompra] CHECK CONSTRAINT [R_17]
+GO
+ALTER TABLE [dbo].[itensvenda]  WITH CHECK ADD  CONSTRAINT [R_13] FOREIGN KEY([ven_cod])
+REFERENCES [dbo].[venda] ([ven_cod])
+GO
+ALTER TABLE [dbo].[itensvenda] CHECK CONSTRAINT [R_13]
+GO
+ALTER TABLE [dbo].[itensvenda]  WITH CHECK ADD  CONSTRAINT [R_14] FOREIGN KEY([pro_cod])
+REFERENCES [dbo].[produto] ([pro_cod])
+GO
+ALTER TABLE [dbo].[itensvenda] CHECK CONSTRAINT [R_14]
+GO
+ALTER TABLE [dbo].[pagamento]  WITH CHECK ADD  CONSTRAINT [FK_pagamento_tipopagamento] FOREIGN KEY([tpa_cod])
+REFERENCES [dbo].[tipopagamento] ([tpa_cod])
+GO
+ALTER TABLE [dbo].[pagamento] CHECK CONSTRAINT [FK_pagamento_tipopagamento]
+GO
+ALTER TABLE [dbo].[parcelascompra]  WITH CHECK ADD  CONSTRAINT [R_25] FOREIGN KEY([com_cod])
+REFERENCES [dbo].[compra] ([com_cod])
+GO
+ALTER TABLE [dbo].[parcelascompra] CHECK CONSTRAINT [R_25]
+GO
+ALTER TABLE [dbo].[parcelasvenda]  WITH CHECK ADD  CONSTRAINT [R_22] FOREIGN KEY([ven_cod])
+REFERENCES [dbo].[venda] ([ven_cod])
+GO
+ALTER TABLE [dbo].[parcelasvenda] CHECK CONSTRAINT [R_22]
+GO
+ALTER TABLE [dbo].[produto]  WITH CHECK ADD  CONSTRAINT [FK_produto_ncm] FOREIGN KEY([pro_ncm])
+REFERENCES [dbo].[ncm] ([ncm])
+GO
+ALTER TABLE [dbo].[produto] CHECK CONSTRAINT [FK_produto_ncm]
+GO
+ALTER TABLE [dbo].[produto]  WITH CHECK ADD  CONSTRAINT [R_11] FOREIGN KEY([cat_cod])
+REFERENCES [dbo].[categoria] ([cat_cod])
+GO
+ALTER TABLE [dbo].[produto] CHECK CONSTRAINT [R_11]
+GO
+ALTER TABLE [dbo].[produto]  WITH CHECK ADD  CONSTRAINT [R_12] FOREIGN KEY([scat_cod])
+REFERENCES [dbo].[subcategoria] ([scat_cod])
+GO
+ALTER TABLE [dbo].[produto] CHECK CONSTRAINT [R_12]
+GO
+ALTER TABLE [dbo].[produto]  WITH CHECK ADD  CONSTRAINT [R_9] FOREIGN KEY([umed_cod])
+REFERENCES [dbo].[undmedida] ([umed_cod])
+GO
+ALTER TABLE [dbo].[produto] CHECK CONSTRAINT [R_9]
+GO
+ALTER TABLE [dbo].[recebimento]  WITH CHECK ADD  CONSTRAINT [FK_recebimento_tipopagamento] FOREIGN KEY([tpa_cod])
+REFERENCES [dbo].[tipopagamento] ([tpa_cod])
+GO
+ALTER TABLE [dbo].[recebimento] CHECK CONSTRAINT [FK_recebimento_tipopagamento]
+GO
+ALTER TABLE [dbo].[recebimento]  WITH CHECK ADD  CONSTRAINT [FK_recebimento_venda] FOREIGN KEY([ven_cod])
+REFERENCES [dbo].[venda] ([ven_cod])
+GO
+ALTER TABLE [dbo].[recebimento] CHECK CONSTRAINT [FK_recebimento_venda]
+GO
+ALTER TABLE [dbo].[subcategoria]  WITH CHECK ADD  CONSTRAINT [R_10] FOREIGN KEY([cat_cod])
+REFERENCES [dbo].[categoria] ([cat_cod])
+GO
+ALTER TABLE [dbo].[subcategoria] CHECK CONSTRAINT [R_10]
+GO
+ALTER TABLE [dbo].[venda]  WITH CHECK ADD  CONSTRAINT [FK_venda_receita] FOREIGN KEY([ven_rec])
+REFERENCES [dbo].[receita] ([rec_cod])
+GO
+ALTER TABLE [dbo].[venda] CHECK CONSTRAINT [FK_venda_receita]
+GO
+ALTER TABLE [dbo].[venda]  WITH CHECK ADD  CONSTRAINT [R_20] FOREIGN KEY([cli_cod])
+REFERENCES [dbo].[cliente] ([cli_cod])
+GO
+ALTER TABLE [dbo].[venda] CHECK CONSTRAINT [R_20]
+GO
+ALTER TABLE [dbo].[venda]  WITH CHECK ADD  CONSTRAINT [R_23] FOREIGN KEY([tpa_cod])
+REFERENCES [dbo].[tipopagamento] ([tpa_cod])
+GO
+ALTER TABLE [dbo].[venda] CHECK CONSTRAINT [R_23]
+GO
+/****** Object:  StoredProcedure [dbo].[LocalizaPorData]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LocalizaPorData]
+(
+	@dtini date,
+	@dtfim date
+)
+AS
+	SET NOCOUNT ON;
+SELECT        p.pco_cod, p.pco_valor, p.pco_valorpago, p.pco_datapagto, p.pco_datavecto, p.com_cod, c.for_cod, f.for_nome, p.des_cod, d.des_descricao
+FROM            parcelascompra AS p INNER JOIN
+                         compra AS c ON p.com_cod = c.com_cod INNER JOIN
+                         fornecedor AS f ON c.for_cod = f.for_cod INNER JOIN
+                         despesa AS d ON p.des_cod = d.des_cod
+WHERE        (p.pco_datavecto BETWEEN @dtini AND @dtfim)
+GO
+/****** Object:  StoredProcedure [dbo].[LocalizarParcelasEmAberto]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LocalizarParcelasEmAberto]
+AS
+	SET NOCOUNT ON;
+SELECT        p.pco_cod, p.pco_valor, p.pco_valorpago, p.pco_datapagto, p.pco_datavecto, p.com_cod, c.for_cod, f.for_nome, p.des_cod, d.des_descricao
+FROM            parcelascompra AS p INNER JOIN
+                         compra AS c ON p.com_cod = c.com_cod INNER JOIN
+                         fornecedor AS f ON c.for_cod = f.for_cod INNER JOIN
+                         despesa AS d ON p.des_cod = d.des_cod
+WHERE        (p.pco_valor > p.pco_valorpago)
+GO
+/****** Object:  StoredProcedure [dbo].[LocalizarParcelasPagas]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LocalizarParcelasPagas]
+AS
+	SET NOCOUNT ON;
+SELECT        p.pco_cod, p.pco_valor, p.pco_valorpago, p.pco_datapagto, p.pco_datavecto, p.com_cod, c.for_cod, f.for_nome, p.des_cod, d.des_descricao
+FROM            parcelascompra AS p INNER JOIN
+                         compra AS c ON p.com_cod = c.com_cod INNER JOIN
+                         fornecedor AS f ON c.for_cod = f.for_cod INNER JOIN
+                         despesa AS d ON p.des_cod = d.des_cod
+WHERE        (p.pco_valor = p.pco_valorpago)
+GO
+/****** Object:  StoredProcedure [dbo].[NewSelectCommand]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[NewSelectCommand]
+(
+	@ven_cod int
+)
+AS
+	SET NOCOUNT ON;
+SELECT        i.itv_cod, i.pro_cod, p.pro_nome, i.itv_qtde, i.itv_valor, i.itv_desconto
+FROM            itensvenda AS i INNER JOIN
+                         produto AS p ON i.pro_cod = p.pro_cod
+WHERE        (i.ven_cod = @ven_cod)
+GO
+/****** Object:  StoredProcedure [dbo].[parcelascompra2]    Script Date: 19/03/2019 15:00:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[parcelascompra2]
+AS
+	SET NOCOUNT ON;
+SELECT        p.pco_cod, p.pco_valor, p.pco_valorpago, p.pco_datapagto, p.pco_datavecto, p.com_cod, c.for_cod, f.for_nome, p.des_cod, d.des_descricao
+FROM            parcelascompra AS p INNER JOIN
+                         compra AS c ON p.com_cod = c.com_cod INNER JOIN
+                         fornecedor AS f ON c.for_cod = f.for_cod INNER JOIN
+                         despesa AS d ON p.des_cod = d.des_cod
+GO
+USE [master]
+GO
+ALTER DATABASE [ControleDeEstoque] SET  READ_WRITE 
+GO
