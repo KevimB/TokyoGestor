@@ -1,7 +1,7 @@
 USE [master]
 GO
-/****** Object:  Database [ControleDeEstoque]    Script Date: 19/03/2019 15:00:58 ******/
-CREATE DATABASE [TokyoGestor]
+/****** Object:  Database [TokyoGestor] Script Date: 30/03/2019 00:07:53 ******/
+CREATE DATABASE [TokyoGestor] 
  CONTAINMENT = NONE
  ON  PRIMARY 
 ( NAME = N'TokyoGestor', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\TokyoGestor.mdf' , SIZE = 7168KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
@@ -75,7 +75,7 @@ ALTER DATABASE [TokyoGestor] SET DELAYED_DURABILITY = DISABLED
 GO
 USE [TokyoGestor]
 GO
-/****** Object:  Table [dbo].[categoria]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[categoria]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -94,7 +94,7 @@ CREATE TABLE [dbo].[categoria](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[cliente]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[cliente]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -128,7 +128,7 @@ CREATE TABLE [dbo].[cliente](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[compra]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[compra]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -146,6 +146,8 @@ CREATE TABLE [dbo].[compra](
 	[tpa_cod] [int] NULL,
 	[ope_cod] [int] NULL,
 	[des_cod] [int] NULL,
+	[com_ident] [int] NULL,
+	[com_historico] [varchar](999) NULL,
  CONSTRAINT [XPKcompra] PRIMARY KEY NONCLUSTERED 
 (
 	[com_cod] ASC
@@ -155,18 +157,21 @@ CREATE TABLE [dbo].[compra](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[configuracoes]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[configuracoes]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[configuracoes](
 	[ultima_nf] [int] NULL,
-	[venda_estoque_positivo] [int] NULL
+	[venda_estoque_positivo] [int] NULL,
+	[ultima_nfc] [int] NULL,
+	[serie_nfe] [int] NULL,
+	[serie_nfce] [int] NULL
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[despesa]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[despesa]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -185,7 +190,32 @@ CREATE TABLE [dbo].[despesa](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[fichatecnica]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[faturasapagar]    Script Date: 30/03/2019 00:07:53 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[faturasapagar](
+	[fap_cod] [varchar](50) NOT NULL,
+	[fap_data] [date] NULL,
+	[fap_ndocto] [int] NULL,
+	[fap_total] [money] NULL,
+	[fap_nparcelas] [int] NULL,
+	[cli_cod] [int] NULL,
+	[tpa_cod] [int] NULL,
+	[des_cod] [int] NULL,
+ CONSTRAINT [PK_faturasapagar] PRIMARY KEY CLUSTERED 
+(
+	[fap_cod] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[fichatecnica]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -198,7 +228,7 @@ CREATE TABLE [dbo].[fichatecnica](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[filial]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[filial]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -230,7 +260,7 @@ CREATE TABLE [dbo].[filial](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[fornecedor]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[fornecedor]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -262,7 +292,7 @@ CREATE TABLE [dbo].[fornecedor](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[itenscompra]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[itenscompra]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -283,7 +313,7 @@ CREATE TABLE [dbo].[itenscompra](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[itensmontagem]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[itensmontagem]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -297,7 +327,7 @@ CREATE TABLE [dbo].[itensmontagem](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[itensvenda]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[itensvenda]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -318,7 +348,7 @@ CREATE TABLE [dbo].[itensvenda](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[montagem]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[montagem]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -336,7 +366,7 @@ CREATE TABLE [dbo].[montagem](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[ncm]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[ncm]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -368,7 +398,7 @@ CREATE TABLE [dbo].[ncm](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[operacao]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[operacao]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -388,7 +418,7 @@ CREATE TABLE [dbo].[operacao](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[pagamento]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[pagamento]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -416,7 +446,7 @@ CREATE TABLE [dbo].[pagamento](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[parcelascompra]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[parcelascompra]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -437,7 +467,7 @@ CREATE TABLE [dbo].[parcelascompra](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[parcelasvenda]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[parcelasvenda]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -458,7 +488,7 @@ CREATE TABLE [dbo].[parcelasvenda](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[produto]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[produto]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -488,7 +518,7 @@ CREATE TABLE [dbo].[produto](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[recebimento]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[recebimento]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -516,7 +546,7 @@ CREATE TABLE [dbo].[recebimento](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[receita]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[receita]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -535,7 +565,7 @@ CREATE TABLE [dbo].[receita](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[subcategoria]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[subcategoria]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -555,7 +585,7 @@ CREATE TABLE [dbo].[subcategoria](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[tipopagamento]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[tipopagamento]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -574,7 +604,7 @@ CREATE TABLE [dbo].[tipopagamento](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[undmedida]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[undmedida]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -593,7 +623,7 @@ CREATE TABLE [dbo].[undmedida](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[usuario]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[usuario]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -613,7 +643,7 @@ CREATE TABLE [dbo].[usuario](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[venda]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Table [dbo].[venda]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -647,6 +677,8 @@ CREATE TABLE [dbo].[venda](
 	[ven_nf] [int] NULL,
 	[ven_chavenf] [varchar](99) NULL,
 	[ven_caminhoxml] [varchar](999) NULL,
+	[ven_nprot] [varchar](50) NULL,
+	[ven_caminhocarta] [varchar](99) NULL,
  CONSTRAINT [XPKvenda] PRIMARY KEY NONCLUSTERED 
 (
 	[ven_cod] ASC
@@ -656,7 +688,7 @@ CREATE TABLE [dbo].[venda](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Index [IX_Table_1]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  Index [IX_Table_1]    Script Date: 30/03/2019 00:07:53 ******/
 CREATE NONCLUSTERED INDEX [IX_Table_1] ON [dbo].[itensmontagem]
 (
 	[itm_cod] ASC,
@@ -754,7 +786,7 @@ REFERENCES [dbo].[tipopagamento] ([tpa_cod])
 GO
 ALTER TABLE [dbo].[venda] CHECK CONSTRAINT [R_23]
 GO
-/****** Object:  StoredProcedure [dbo].[LocalizaPorData]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  StoredProcedure [dbo].[LocalizaPorData]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -773,7 +805,7 @@ FROM            parcelascompra AS p INNER JOIN
                          despesa AS d ON p.des_cod = d.des_cod
 WHERE        (p.pco_datavecto BETWEEN @dtini AND @dtfim)
 GO
-/****** Object:  StoredProcedure [dbo].[LocalizarParcelasEmAberto]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  StoredProcedure [dbo].[LocalizarParcelasEmAberto]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -788,7 +820,7 @@ FROM            parcelascompra AS p INNER JOIN
                          despesa AS d ON p.des_cod = d.des_cod
 WHERE        (p.pco_valor > p.pco_valorpago)
 GO
-/****** Object:  StoredProcedure [dbo].[LocalizarParcelasPagas]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  StoredProcedure [dbo].[LocalizarParcelasPagas]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -803,7 +835,7 @@ FROM            parcelascompra AS p INNER JOIN
                          despesa AS d ON p.des_cod = d.des_cod
 WHERE        (p.pco_valor = p.pco_valorpago)
 GO
-/****** Object:  StoredProcedure [dbo].[NewSelectCommand]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  StoredProcedure [dbo].[NewSelectCommand]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -819,7 +851,7 @@ FROM            itensvenda AS i INNER JOIN
                          produto AS p ON i.pro_cod = p.pro_cod
 WHERE        (i.ven_cod = @ven_cod)
 GO
-/****** Object:  StoredProcedure [dbo].[parcelascompra2]    Script Date: 19/03/2019 15:00:58 ******/
+/****** Object:  StoredProcedure [dbo].[parcelascompra2]    Script Date: 30/03/2019 00:07:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -835,5 +867,5 @@ FROM            parcelascompra AS p INNER JOIN
 GO
 USE [master]
 GO
-ALTER DATABASE [ControleDeEstoque] SET  READ_WRITE 
+ALTER DATABASE [TokyoGestor] SET  READ_WRITE 
 GO
